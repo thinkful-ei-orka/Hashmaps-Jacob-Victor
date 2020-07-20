@@ -3,6 +3,7 @@ class HashMap_SepChain {
           this.length = 0;
           this._hashTable = [];
           this._capacity = initialCapacity;
+          this._deleted = 0;
      }
 
      static _hashString(string) {
@@ -15,7 +16,7 @@ class HashMap_SepChain {
      }
 
      get(key) {
-          const hash = HashMap_SepChain._hashString(key)
+          const hash = HashMap_SepChain._hashString(key);
           const index = hash % this._capacity;
           const slot = this._hashTable[index];
 
@@ -24,6 +25,7 @@ class HashMap_SepChain {
           }
 
           for (let i = 0; i < slot.length; i++) {
+               console.log(slot)
                if (slot[i].key === key) {
                     return slot[i].value;
                }
@@ -32,8 +34,9 @@ class HashMap_SepChain {
 
      set(key, value) {
           const loadRatio = (this.length + this._deleted + 1) / this._capacity;
-          if (loadRatio > HashMap_SepChain.MAX_LOAD_RATIO) {
-               this._resize(this._capacity * HashMap_SepChain.SIZE_RATIO);
+          console.log(loadRatio, this.MAX_LOAD_RATIO)
+          if (loadRatio > this.MAX_LOAD_RATIO) {
+               this._resize(this._capacity * this.SIZE_RATIO);
           }
 
           const hash = HashMap_SepChain._hashString(key);
@@ -46,27 +49,33 @@ class HashMap_SepChain {
 
           for (let i = 0; i < this._hashTable[index].length; i++) {
                if (this._hashTable[index][i].key === key) {
-                    return (this._hashTable[index][i].value === value)
+                    if (this._hashTable[index][i].value === value) {
+                         return true
+                    }
+                    this._hashTable[index][i].value = value
+                    return false
                }
           }
 
           this.length++;
-          this._hashTable[index].push = ({ key, value })
+          this._hashTable[index].push({key, value})
      };
 
-     // _findSlot(key) {
-     //      const hash = HashMap._hashString(key);
-     //      const start = hash % this._capacity;
+     _findSlot(key) {
+          const hash = HashMap_SepChain._hashString(key);
+          const start = hash % this._capacity;
 
-     //      for (let i = start; i < start + this._capacity; i++) {
-     //           const index = i % this._capacity;
-     //           const slot = this._hashTable[index];
-     //           if (slot === undefined || (slot.key === key && !slot.DELETED)) {
-     //                return index;
-     //           }
-     //      }
-     // }
+          for (let i = start; i < start + this._capacity; i++) {
+               const index = i % this._capacity;
+               const slot = this._hashTable[index];
+               if (slot === undefined || (slot.key === key && !slot.DELETED)) {
+                    return index;
+               }
+          }
+     }
+     
      _resize(size) {
+          console.log('resizing')
           const oldSlots = this._hashTable;
           this._capacity = size;
           // Reset the length - it will get rebuilt as you add the items back
@@ -78,6 +87,7 @@ class HashMap_SepChain {
                     slot.forEach(obj => this.set(obj.key, obj.value));
                }
           }
+          console.log(this._hashTable)
      }
 
      delete(key) {
