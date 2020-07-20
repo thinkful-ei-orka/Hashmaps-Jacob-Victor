@@ -129,8 +129,9 @@ removeDupe('google all that you think can think of'); //gole athyuinkcf
 //is a palindrome. In contrast, given the word "north", the algorithm should return 
 //false, because there's no anagram for "north" that would be a palindrome.
 
-function palindrome(string) {
-
+function palindrome(str) { 
+     let reverseStr = str.toLowerCase().match(/[a-z]/gi).reverse(); 
+     return reverseStr.join('') === reverseStr.reverse().join(''); 
 }
 
 
