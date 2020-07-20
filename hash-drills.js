@@ -99,3 +99,40 @@ threeTwo.set(33);
 threeTwo.set(12);
 threeTwo.set(17);
 threeTwo.set(10);
+
+//4. Remove Duplicates
+//Implement a function to delete all duplicated characters in a string and keep 
+//only the first occurrence of each character. For example, if the input is string 
+//“google”, the result after deletion is “gole”. Test your program with a sentence 
+//as well such as "google all that you think can think of".
+function removeDupe(string) {
+     const hashDupe = new Map();
+     let newString = '';
+
+     string.split('').forEach(letter => {
+          if (!hashDupe.has(letter)) {
+               hashDupe.set(letter, '');
+               newString += letter;
+          }
+     });
+
+     console.log(newString)
+}
+
+removeDupe('google'); //gole
+removeDupe('google all that you think can think of'); //gole athyuinkcf
+
+//5. Any permutation a palindrome
+//Write an algorithm to check whether any anagram of some string is a palindrome. 
+//Given some string, "acecarr", the algorithm should return true, because the 
+//letters in "acecarr" can be rearranged to the anagram "racecar", which itself 
+//is a palindrome. In contrast, given the word "north", the algorithm should return 
+//false, because there's no anagram for "north" that would be a palindrome.
+
+function palindrome(string) {
+
+}
+
+
+console.log(palindrome('acecarr'))
+console.log(palindrome('north'))
